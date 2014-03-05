@@ -10,7 +10,6 @@ class BSTNode{
 
 			         /* Constructor */
          public BSTNode(){
-
              left = null;
              right = null;
              isbn = 0;
@@ -18,7 +17,6 @@ class BSTNode{
 
          			/* Constructor */
          public BSTNode(String title,String a_name,String a_sname,int isbn){
-
              left = null;
              right = null;
 	     this.title=title;
@@ -90,9 +88,7 @@ class BSTNode{
 /* Class BST */
 class BST{
 
-         private BSTNode root;
-
-     
+         private BSTNode root;     
 
 			         /* Constructor */
          public BST(){
@@ -119,64 +115,37 @@ class BST{
          private BSTNode insert(BSTNode node,String title,String a_name,String a_sname,int isbn){
 
              if (node == null)
-
                  node = new BSTNode(title,a_name,a_sname,isbn);
 
              else{
-
                  if (isbn <= node.getIsbn())
-
                      node.setLeft(insert(node.getLeft(),title,a_name,a_sname, isbn));
 
                  else
-
                      node.setRight(insert(node.getRight(),title,a_name,a_sname, isbn));
-
              }
 
              return node;
-
          }
 
 
          			/* Functions to delete data */
-         public void delete(int isbn){
-
-
+         public void deleteIsbn(int isbn){
 	     
              if (isEmpty())
-			System.out.println("Tree Empty");
+			System.out.println("\n\n\t\t!!!!!!There is no Books Available!!!!!!");
 
-             //else if (search(k) == false)
-                 	//System.out.println("Sorry "+ isbn +" is not present");
+             else if (searchIsbn(isbn) == false)
+                 	System.out.println("\n\t\t!!!!!Sorry "+ isbn +" is not present!!!!!");
 
              else{
-
-                 root = delete(root, isbn);
-                 System.out.println(isbn+ " deleted from the tree");
-
+                 root = deleteIsbn(root, isbn);
+                 System.out.println("\n\t\t"+isbn+" Deleted From The Book Database");
              }
-	     
-             /*if (isEmpty())
-			System.out.println("\t\tTree Empty");
-
-	     //boolean found = false;
-	     bst.search(isbn);
-             else if (found == false)
-                 	System.out.println("\t\tSorry "+ isbn +" is not present");
-
-             else if(found == true)
-	     {
-                 root = delete(root, isbn);
-                 System.out.println("\t\t"+isbn+ " deleted from the tree");
-
-             }*/
-	     
-		
-
+	    
          }
 
-         private BSTNode delete(BSTNode root, int isbn){
+         private BSTNode deleteIsbn(BSTNode root, int isbn){
 
              BSTNode p, p2, n;
 
@@ -185,87 +154,86 @@ class BST{
              {
 
                  BSTNode lt, rt;
-
                  lt = root.getLeft();
-
                  rt = root.getRight();
 
                  if (lt == null && rt == null)
-
                      return null;
 
-                 else if (lt == null)
-
-                 {
+                 else if (lt == null){
 
                      p = rt;
-
                      return p;
-
                  }
 
-                 else if (rt == null)
-
-                 {
+                 else if (rt == null){
 
                      p = lt;
-
                      return p;
-
                  }
 
-                 else
-
-                 {
+                 else{
 
                      p2 = rt;
-
                      p = rt;
 
                      while (p.getLeft() != null)
-
                          p = p.getLeft();
 
                      p.setLeft(lt);
-
                      return p2;
 
                  }
 
              }
 
-             if (isbn < root.getIsbn())
+             if (isbn < root.getIsbn()){
 
-             {
-
-                 n = delete(root.getLeft(), isbn);
-
+                 n = deleteIsbn(root.getLeft(), isbn);
                  root.setLeft(n);
-
              }
 
-             else
+             else{
 
-             {
-
-                 n = delete(root.getRight(), isbn);
-
+                 n = deleteIsbn(root.getRight(), isbn);
                  root.setRight(n);             
-
              }
 
              return root;
 
          }
 
-	public void search(int isbn){
+	public boolean deleteString(String title){
+	
+		return deleteString(root,title);
+	}
+	public boolean deleteString(BSTNode node,String title){
+	
+	    boolean found=false;
+	    String t="";
+	    if (node != null){
 
-             search(root,isbn);
+                 deleteString(node.getLeft(),title);
+		 t=node.getTitle();
+		 if(title.equalsIgnoreCase(t)){
+			System.out.println("\n\n\t\tThere is Book Available in Database");
+		 	deleteIsbn(node.getIsbn());
+			found=true; 
+		 }
+	   	 deleteString(node.getRight(),title);
+        	     
+	    }
+	    return found;
+	}
 
-         }
+	public boolean searchIsbn(int isbn){
+
+             return searchIsbn(root,isbn);
+
+        }
 
          		/* Function to search for an element recursively */
-         private void search(BSTNode node , int isbn){
+         private boolean searchIsbn(BSTNode node , int isbn){
 
              boolean found = false;
 
@@ -274,11 +242,9 @@ class BST{
                  int root_isbn = node.getIsbn();
 
                  if (isbn < root_isbn)
-
                      node = node.getLeft();
 
                  else if (isbn > root_isbn)
-
                      node = node.getRight();
 
                  else{
@@ -294,30 +260,50 @@ class BST{
 		 System.out.print("\n\t\tAuthor Name    : "+node.getAName());
 		 System.out.print("\n\t\tAuthor Surname : "+node.getASName());
 		 System.out.println("\n\t\tBook ISBN      : "+node.getIsbn());
+		 return found;
 	     }
 	     else
-	         System.out.print("\n\t\tThis book is not available in database");
+	         return found;
              
 
          }
 
+	public boolean searchString(String title){
+	    
+	    return searchString(root,title);
+	}
+	
+	public boolean searchString(BSTNode node,String title){
+	    boolean found=false;
+	    String t="";
+	    if (node != null){
+
+                 searchString(node.getLeft(),title);
+		 t=node.getTitle();
+		 if(title.equalsIgnoreCase(t)){
+			System.out.println("\n\n\t\tThere is Book Available in Database");
+                 	System.out.println("\n\n\t\tBook Title   : "+node.getTitle());
+		 	System.out.println("\t\tAuthor Name    : "+node.getAName());
+		 	System.out.println("\t\tAuthor Surname : "+node.getASName());
+		 	System.out.println("\t\tISBN           : "+node.getIsbn());
+			found=true; 
+		 }
+	   	 searchString(node.getRight(),title);
+        	     
+	    }
+	    return found;   
+	}
+
          /* Function for inorder traversal */
 
-         public void inorder()
-
-         {
-	     System.out.println("\n\t\troot:"+root.getIsbn());	
+         public void inorder(){
+	
              inorder(root);
-
          }
 
-         public void inorder(BSTNode r)
+         public void inorder(BSTNode r){
 
-         {
-
-             if (r != null)
-
-             {
+             if (r != null){
 
                  inorder(r.getLeft());
 
@@ -327,12 +313,11 @@ class BST{
 		 System.out.println("\t\tISBN           : "+r.getIsbn());
 		 
                  inorder(r.getRight());
-
              }
 
          }
 
-}     
+}
 
      /* Class BinarySearchTree */
 
@@ -341,11 +326,8 @@ public class BinarySearchTree5{
         public static void main(String[] args)throws Exception{                 
 
             Scanner scan = new Scanner(System.in);
-
-            /* Creating object of BST */
-
+                 /* Creating object of BST */
             BST bst = new BST();          
-
             char ch;
 
 		bst.insert("Java object oriented programming","Simon","Kendal",7854393);
@@ -367,56 +349,92 @@ public class BinarySearchTree5{
 
             /*  Perform tree operations  */
 
-            do    
-
-            {
+            do{
 
                 System.out.print("\n\n\n\n-----------------------------BOOKSHOP DATABASE--------------------------------\n\n\n\t\t*******************MENU********************\n\n");
-
                 System.out.println("\t\t(1) Insert Book\t\t(2) Delete Book \n\t\t(3) Search Book\t\t(4) Print All Books");
        		
 		BufferedReader br=new BufferedReader(new InputStreamReader(System.in)); 
 
 		System.out.print("\n\n\t\tPlease Enter The Operation No : ");
 		int choice=Integer.parseInt(br.readLine());
-                //int choice = scan.nextInt();  
+                  
 
-                switch (choice)
-
-                {
+                switch (choice){
 
                 case 1 : 
 		    System.out.print("\n\n\t\tEnter Book Title          : ");
 		    String title=br.readLine();
-		    //String title=scan.next();
+		
 
 		    System.out.print("\n\t\tEnter Book Author Name    : ");
 		    String a_name=br.readLine();
-		    //String a_name=scan.next();
+	
 		    
                     System.out.print("\n\t\tEnter Book Author Surname : ");
 		    String a_sname=br.readLine();
-		    //String a_sname=scan.next();
-                    
+
 		    System.out.print("\n\t\tEnter Book ISBN           : ");
 		    int isbn=Integer.parseInt(br.readLine());
-                    //int isbn=scan.nextInt();                     
-			
+		
 		    bst.insert(title,a_name,a_sname,isbn);
                     break; 
   
 		case 2:
-		    System.out.print("\n\n\t\tEnter Book ISBN   : ");
-		    bst.delete(Integer.parseInt(br.readLine()));
-		    //bst.delete(scan.nextInt());
-                    break;  
-                     
-		case 3:
-		    System.out.print("\n\n\t\tEnter Book ISBN   : ");
-		    bst.search(Integer.parseInt(br.readLine()));
-		    //bst.search(scan.nextInt());
-                    break;
+		    
+		   
+		    System.out.println("\n\n\t\t\t(1) Delete By ISBN\n\t\t\t(2) Delete by Title");
+		    System.out.print("\n\t\t\tPlease Enter The Operation No : ");
+		    int choice2=Integer.parseInt(br.readLine());
 
+		    switch(choice2){
+			
+		    case 1:
+			System.out.print("\n\n\t\tEnter Book ISBN   : ");
+		        bst.deleteIsbn(Integer.parseInt(br.readLine()));
+                    	break;
+
+		    case 2:
+		    	System.out.print("\n\n\t\tEnter Book Title   : ");
+		    	boolean t=bst.deleteString(br.readLine());
+			if(!t)
+				System.out.println("\n\n\t\tThere is not Book in Database");
+                    	break;
+
+		    default : 
+                    	System.out.println("\n\n\t\t\t!!!!!!!!!!!!!!!!WRONG ENTRY!!!!!!!!!!!!!!!! \n ");
+		    	break;
+		    }
+		    break;
+		        
+		case 3:
+
+		    System.out.println("\n\n\t\t\t(1) Search By ISBN\n\t\t\t(2) Search by Title");
+		    System.out.print("\n\t\t\tPlease Enter The Operation No : ");
+		    int choice1=Integer.parseInt(br.readLine());
+
+		    switch(choice1){
+			
+		    case 1:
+			System.out.print("\n\n\t\tEnter Book ISBN   : ");
+		   	boolean t1=bst.searchIsbn(Integer.parseInt(br.readLine()));
+			if(!t1)
+				System.out.print("\n\t\t!!!!!This book is not available in database!!!!!");
+                    	break;
+
+		    case 2:
+		    	System.out.print("\n\n\t\tEnter Book Title   : ");
+		    	boolean t=bst.searchString(br.readLine());
+
+		    	if(!t)
+				System.out.println("\n\n\t\tThere is not Book in Database");
+                    	break;
+
+		    default : 
+                    	System.out.println("\n\n\t\t\t!!!!!!!!!!!!!!!!WRONG ENTRY!!!!!!!!!!!!!!!! \n ");
+		    	break;
+		    }
+		    break;
 		case 4:
 		    bst.inorder();
 		    break;
@@ -428,10 +446,7 @@ public class BinarySearchTree5{
                 }
 
                 System.out.print("\n\n\t\tDo you want to continue (Type Y/N) : ");
-		
-		//ch = br.readLine();
                 ch = scan.next().charAt(0);
-		
 		System.out.print("\n\n\n");                        
 
             } while (ch == 'Y' || ch == 'y');  
